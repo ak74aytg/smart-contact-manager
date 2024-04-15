@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="normal/base::Layout(~{::section})"
+>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    
+    
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <section>
+      <div class="contain mb-5">
+        <div class="row">
+          <div class="col">
+          	<div th:if="${contact}" class="card mt-3 pt-3">
+	          	<div style="justify-content: center;display: flex;">
+	          		<img 
+	          		th:src="@{${contact.image} != null} ? '/img/' + ${contact.image} : '/img/contact.png'" 
+	          		class="profile_image" 
+	          		style="width:300px;height:300px;object-fit:contain" 
+	          		/>
+	          	</div>
+	          	<div>
+	          		<h1 class="text-center font-weight-bold text-capitalize" th:text="${contact.name}"></h1>
+	          		<h4 class="text-center font-weight-lighter font-italic" th:text="${contact.nickName}"></h4>
+	          	</div>
+	          	<div>
+	          		<table class="table">
+						  <thead>
+						    <tr>
+						      <th class="text-center" scope="col">#Id</th>
+						      <th class="text-center" th:text="${contact.cid}+'SCM'" scope="col"></th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <th class="text-center" scope="row">Email</th>
+						      <td th:text="${contact.email}" class="text-center" >Mark</td>
+						    </tr>
+						    <tr>
+						      <th class="text-center" scope="row">Phone</th>
+						      <td th:text="${contact.phone}" class="text-center" >Mark</td>
+						    </tr>
+						    <tr>
+						      <th class="text-center" scope="row">Work</th>
+						      <td th:text="${contact.work}" class="text-center" >Mark</td>
+						    </tr>
+						  </tbody>
+						</table>
+	          	</div>
+	          	<div class="mx-5 my-4">
+	          		<div th:utext="${contact.description}"></div>
+	          	</div>
+	          	<div class="px-5 pb-4">
+	          		<a type="button" th:href="@{'/user/contact/edit/'+${contact.cid}+SCM}" class="btn btn-primary btn-block">Edit</a>
+					<button type="button" 
+					th:onclick="|deleteFunction(${contact.cid})|" 
+					class="btn btn-danger btn-block"
+					>Delete</button>
+	          	</div>
+          	</div>
+          	<div class="bg-danger mt-4" th:unless="${contact}">
+          		<h2 class="text-center text-white">You don't have permission to access this link</h2>
+          	</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
