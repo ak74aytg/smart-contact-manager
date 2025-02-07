@@ -8,10 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -21,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,7 +77,7 @@ public class UserController {
 			System.out.println(contact);
 			String username = principal.getName();
 			User user = userRepository.getUserByUsername(username);
-			int userId = user.getId();
+			String userId = user.getId();
 			contact.setUser(user);
 			
 			if (file != null && !file.isEmpty()) {
@@ -159,9 +155,9 @@ public class UserController {
 	@GetMapping("/{contactId}/contact")
 	public String showContactsHandler(@PathVariable("contactId") String contactId, Model model, Principal principal) {
 		try {
-			int cId = Integer.parseInt(contactId.substring(0, contactId.length()-3));
+			String cId = contactId.substring(0, contactId.length()-3);
 			Contact contact = contactRepository.findById(cId).get();
-			int userId = userRepository.getUserByUsername(principal.getName()).getId();
+			String userId = userRepository.getUserByUsername(principal.getName()).getId();
 			if(userId==contact.getUser().getId())
 				model.addAttribute("contact", contact);
 		} catch (Exception e) {
@@ -175,9 +171,9 @@ public class UserController {
 	public String deleteContactHandler(@PathVariable("contactId") String contactId, Principal principal, HttpSession session) {
 		int page = session.getAttribute("current_page")==null ? 1 : (int) session.getAttribute("current_page");
 		try {
-			int cId = Integer.parseInt(contactId.substring(0, contactId.length()-3));
+			String cId = contactId.substring(0, contactId.length()-3);
 			Contact contact = contactRepository.findById(cId).get();
-			int userId = userRepository.getUserByUsername(principal.getName()).getId();
+			String userId = userRepository.getUserByUsername(principal.getName()).getId();
 			if(userId==contact.getUser().getId()) {
 				if(contact.getImage()!=null) {
 					String UPLOAD_DIR = new ClassPathResource("/static/img").getFile().getAbsolutePath();
@@ -199,9 +195,9 @@ public class UserController {
 	
 	@GetMapping("contact/edit/{contactId}")
 	public String updateHandler(@PathVariable("contactId") String contactId, Principal principal, Model model) {
-		int cId = Integer.parseInt(contactId.substring(0, contactId.length()-3));
+		String cId = contactId.substring(0, contactId.length()-3);
 		Contact contact = contactRepository.findById(cId).get();
-		int userId = userRepository.getUserByUsername(principal.getName()).getId();
+		String userId = userRepository.getUserByUsername(principal.getName()).getId();
 		if(userId==contact.getUser().getId()) {
 			model.addAttribute("contact", contact);
 		}
@@ -217,7 +213,7 @@ public class UserController {
 			@RequestParam("profileImage") MultipartFile file) {
 		
 		int page = session.getAttribute("current_page")==null ? 1 : (int) session.getAttribute("current_page");
-		int cId = Integer.parseInt(contactId.substring(0, contactId.length()-3));
+		String cId = contactId.substring(0, contactId.length()-3);
 		Contact savedContact = contactRepository.findById(cId).get();
 		
 		

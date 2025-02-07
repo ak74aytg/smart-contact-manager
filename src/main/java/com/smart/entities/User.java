@@ -3,43 +3,35 @@ package com.smart.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-@Entity
+@Document(collection = "users")
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private String id;
 
 	@NotBlank(message = "Name field is required!! ")
 	private String name;
 
-	@Column(unique = true)
 	@NotBlank(message = "Email field is required!! ")
 	@Email(message = "Enter a valid email!! ")
 	private String email;
 
-	@Column
 	@NotBlank(message = "Password field is required!! ")
-	@Size(min = 4, message = "length should be greater than 4")
+	@Size(min = 4, message = "Length should be greater than 4")
 	@Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[@#$%^&+=!]).*$", message = "Password must contain at least one letter, one number, and one special character")
 	private String password;
 
-	@Column(length = 500)
 	private String about;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@DBRef
 	private List<Contact> contacts = new ArrayList<>();
 
 	private String role;
@@ -60,11 +52,11 @@ public class User {
 				+ ", role=" + role + ", enabled=" + enabled + ", imageUrl=" + imageUrl + "]";
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
